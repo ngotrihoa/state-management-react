@@ -1,23 +1,11 @@
 import React from 'react';
-import { useDispatch, useSelector } from './stateManager';
-import {
-  decrementCounterAction,
-  incrementCounterAction,
-} from './stores/action';
+import Filters from './components/Filters';
 
 function App() {
-  const counter = useSelector((state) => state.counter.valueCounter);
-  const dispatch = useDispatch();
-
   return (
-    <div className=''>
-      <h1>{counter}</h1>
-      <button onClick={() => dispatch?.(incrementCounterAction())}>
-        Increment
-      </button>
-      <button onClick={() => dispatch?.(decrementCounterAction())}>
-        Decrement
-      </button>
+    <div className='w-[500px] mt-[5vh] mx-auto p-5 rounded-md h-[90vh] bg-white shadow-[0_0_10px_4px_#bfbfbf] flex-col'>
+      <h1 className='text-3xl font-bold'>TODO APP with CUSTOM REDUX</h1>
+      <Filters />
     </div>
   );
 }
