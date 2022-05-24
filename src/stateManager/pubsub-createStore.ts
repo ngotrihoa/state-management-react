@@ -13,7 +13,8 @@ export const createStore = <T extends Reducer>(
   getState: () => Parameters<T>[0];
 } => {
   let storeListeners: Function[] = [];
-  const state: { [name: string]: any } = {};
+
+  let state: { [name: string]: any } = {};
 
   for (const [name, reducer] of Object.entries(rootReducer)) {
     state[name] = reducer(undefined, {});

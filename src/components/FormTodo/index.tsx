@@ -2,7 +2,7 @@ import React, { SyntheticEvent, useRef, useState } from 'react';
 import Select from 'react-select';
 import { v4 as uuidv4 } from 'uuid';
 import { PRIORITY, PriotityType } from '../../constants/const';
-import { useDispatch } from '../../stateManager';
+import { useDispatch, useSelector } from '../../stateManager';
 import { addTodo } from '../../stores/action/todo/action';
 import { convertObjectToArray } from '../../utils';
 import { colourStyles } from './const';
@@ -11,6 +11,8 @@ const priorityArr = convertObjectToArray(PRIORITY);
 
 const FormTodo = () => {
   const inputValue = useRef<HTMLInputElement | null>(null);
+
+  const todoStore = useSelector((state) => state.todo);
 
   const [prioritySelected, setPrioritySelected] =
     useState<PriotityType>('HIGH');
@@ -21,10 +23,12 @@ const FormTodo = () => {
     e.preventDefault();
     const value = inputValue.current!.value.trim();
     if (value === '') return;
-    dispatch?.(
+
+    dispatch(
       addTodo({
         id: uuidv4(),
         content: value,
+        numOrder: todoStore.totalTodo + 1,
         priority: prioritySelected,
         status: 'todo',
       })

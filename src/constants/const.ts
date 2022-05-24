@@ -29,7 +29,7 @@ export const PRIORITY: PriorityProps = {
   },
 };
 
-export const statusTodoType = {
+export const statusTodoType: { [key: string]: StatusTodoType } = {
   COMPLETED: 'completed',
   TODO: 'todo',
 };

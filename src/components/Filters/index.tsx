@@ -1,17 +1,38 @@
-import React, { SyntheticEvent, useRef } from 'react';
+import React, { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import Select from 'react-select';
-import { PRIORITY } from '../../constants/const';
+import { PRIORITY, StatusTodoType } from '../../constants/const';
+import { useDispatch } from '../../stateManager';
+import {
+  filterByKey,
+  filterByPriority,
+  filterByStatus,
+} from '../../stores/action/todo/action';
 import { convertObjectToArray } from '../../utils';
 import { colourStyles } from './const';
 
 const priorityArr = convertObjectToArray(PRIORITY);
 
 const Filters = () => {
-  const keySeach = useRef<HTMLInputElement | null>(null);
+  const keyRef = useRef<HTMLInputElement | null>(null);
+
+  const [statusRadioValue, setStatusRadioValue] = useState<
+    StatusTodoType | 'all'
+  >('all');
+
+  const dispatch = useDispatch();
+
   const handleSearch = (e: SyntheticEvent) => {
     e.preventDefault();
-    console.log('🚀 ~ keySeach', keySeach.current!.value);
+
+    const key = keyRef.current!.value.trim().toLowerCase();
+    key === '' && dispatch(filterByKey(key));
   };
+
+  useEffect(() => {
+    dispatch(filterByStatus(statusRadioValue));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [statusRadioValue]);
+
   return (
     <div className='mt-8'>
       <form onSubmit={handleSearch}>
@@ -24,7 +45,10 @@ const Filters = () => {
             id='search'
             className='flex-1 border px-3 py-1'
             placeholder='Type to search...'
-            ref={keySeach}
+            onChange={() =>
+              dispatch(filterByKey(keyRef.current!.value.trim().toLowerCase()))
+            }
+            ref={keyRef}
           />
           <button
             type='submit'
@@ -40,15 +64,33 @@ const Filters = () => {
         </label>
         <div className='flex gap-10 mt-2'>
           <div className='flex items-center gap-2'>
-            <input type='radio' name='status' id='all' />
+            <input
+              type='radio'
+              name='status'
+              id='all'
+              checked={statusRadioValue === 'all'}
+              onChange={() => setStatusRadioValue('all')}
+            />
             <label htmlFor='all'>All</label>
           </div>
           <div className='flex items-center gap-2'>
-            <input type='radio' name='status' id='completed' />
+            <input
+              type='radio'
+              name='status'
+              id='completed'
+              checked={statusRadioValue === 'completed'}
+              onChange={() => setStatusRadioValue('completed')}
+            />
             <label htmlFor='completed'>Completed</label>
           </div>
           <div className='flex items-center gap-2'>
-            <input type='radio' name='status' id='todo' />
+            <input
+              type='radio'
+              name='status'
+              id='todo'
+              checked={statusRadioValue === 'todo'}
+              onChange={() => setStatusRadioValue('todo')}
+            />
             <label htmlFor='todo'>Todo</label>
           </div>
         </div>
@@ -62,6 +104,9 @@ const Filters = () => {
           isMulti
           placeholder='Select priority...'
           className='mt-2'
+          onChange={(value) => {
+            dispatch(filterByPriority(value.map((item: any) => item.value)));
+          }}
           styles={colourStyles}
           options={priorityArr}
         />

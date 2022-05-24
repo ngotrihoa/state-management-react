@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
-import { PriotityType, PRIORITY } from '../../constants/const';
+import React from 'react';
+import { PRIORITY, PriotityType } from '../../constants/const';
 import BoxStatus from '../BoxStatus';
 
 interface TodoItemProps {
   id: string;
   content: string;
   status: string;
+  numOrder: number;
   priority: PriotityType;
+  onChange: Function;
+  onDelete: Function;
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({
@@ -14,35 +17,36 @@ const TodoItem: React.FC<TodoItemProps> = ({
   content,
   status,
   priority,
+  numOrder,
+  onChange,
+  onDelete,
 }) => {
-  const [isChecked, setIsChecked] = useState<boolean>(status === 'completed');
-  const handleChange = () => {
-    setIsChecked((prev) => !prev);
-  };
-
   return (
-    <div
-      className={`flex items-center gap-2 ${
-        isChecked ? 'opacity-40 line-through' : ''
-      }`}
-    >
-      <input
-        type='checkbox'
-        name=''
-        id={id}
-        checked={isChecked}
-        onChange={handleChange}
-        className='w-4 h-4'
-      />
-      <label
-        htmlFor={id}
-        className='inline-block flex-1 text-[18px] capitalize'
+    <div className='flex gap-2'>
+      <div
+        className={`flex flex-1 items-center gap-2 ${
+          status === 'completed' ? 'opacity-40 line-through' : ''
+        }`}
       >
-        {content}
-      </label>
-      <BoxStatus color={PRIORITY[priority].color}>
-        {PRIORITY[priority].label}
-      </BoxStatus>
+        <input
+          type='checkbox'
+          name=''
+          id={id}
+          checked={status === 'completed'}
+          onChange={() => onChange()}
+          className='w-4 h-4'
+        />
+        <label htmlFor={id} className='inline-block flex-1 text-[18px]'>
+          <span className='text-blue-400 pr-1'>#{numOrder} </span>
+          <span className='capitalize'>{content}</span>
+        </label>
+        <BoxStatus color={PRIORITY[priority].color}>
+          {PRIORITY[priority].label}
+        </BoxStatus>
+      </div>
+      <div className='cursor-pointer' onClick={() => onDelete()}>
+        x
+      </div>
     </div>
   );
 };

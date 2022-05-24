@@ -1,4 +1,4 @@
-import chroma, { css } from 'chroma-js';
+import chroma from 'chroma-js';
 import React from 'react';
 
 interface BoxStatusProps {
