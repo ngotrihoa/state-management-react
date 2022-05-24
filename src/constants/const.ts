@@ -1,4 +1,5 @@
 export type PriotityType = 'HIGH' | 'MEDIUM' | 'LOW';
+export type StatusTodoType = 'completed' | 'todo';
 
 export interface PriorityItemProps {
   value: string;
@@ -6,23 +7,23 @@ export interface PriorityItemProps {
   color: string;
 }
 
-type PriorityProps = {
+export type PriorityProps = {
   [key in PriotityType]: PriorityItemProps;
 };
 
-export const priority: PriorityProps = {
+export const PRIORITY: PriorityProps = {
   HIGH: {
-    value: 'high',
+    value: 'HIGH',
     label: 'High',
     color: 'red',
   },
   MEDIUM: {
-    value: 'medium',
+    value: 'MEDIUM',
     label: 'Medium',
     color: 'blue',
   },
   LOW: {
-    value: 'low',
+    value: 'LOW',
     label: 'Low',
     color: 'gray',
   },

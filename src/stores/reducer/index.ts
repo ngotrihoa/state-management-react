@@ -1,5 +1,5 @@
 import counterReducer from './counter';
-import todoReducer from './todo';
+import { todoReducer } from './todo';
 
 const rootReducer = {
   todo: todoReducer,

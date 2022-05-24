@@ -1,16 +1,37 @@
-import React, { SyntheticEvent, useRef } from 'react';
+import React, { SyntheticEvent, useRef, useState } from 'react';
 import Select from 'react-select';
-import { priority } from '../../constants/const';
+import { v4 as uuidv4 } from 'uuid';
+import { PRIORITY, PriotityType } from '../../constants/const';
+import { useDispatch } from '../../stateManager';
+import { addTodo } from '../../stores/action/todo/action';
 import { convertObjectToArray } from '../../utils';
 import { colourStyles } from './const';
 
-const priorityArr = convertObjectToArray(priority);
+const priorityArr = convertObjectToArray(PRIORITY);
 
 const FormTodo = () => {
   const inputValue = useRef<HTMLInputElement | null>(null);
+
+  const [prioritySelected, setPrioritySelected] =
+    useState<PriotityType>('HIGH');
+
+  const dispatch = useDispatch();
+
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    console.log(inputValue.current!.value);
+    const value = inputValue.current!.value.trim();
+    if (value === '') return;
+    dispatch?.(
+      addTodo({
+        id: uuidv4(),
+        content: value,
+        priority: prioritySelected,
+        status: 'todo',
+      })
+    );
+
+    //reset
+    inputValue.current!.value = '';
   };
   return (
     <form className='flex items-stretch' onSubmit={handleSubmit}>
@@ -26,7 +47,7 @@ const FormTodo = () => {
         menuPlacement='top'
         menuPosition='absolute'
         placeholder='Select priority...'
-        className=''
+        onChange={(priority) => setPrioritySelected(priority.value)}
         styles={colourStyles}
         options={priorityArr}
       />

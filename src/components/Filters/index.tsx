@@ -1,10 +1,10 @@
 import React, { SyntheticEvent, useRef } from 'react';
 import Select from 'react-select';
-import { priority } from '../../constants/const';
+import { PRIORITY } from '../../constants/const';
 import { convertObjectToArray } from '../../utils';
 import { colourStyles } from './const';
 
-const priorityArr = convertObjectToArray(priority);
+const priorityArr = convertObjectToArray(PRIORITY);
 
 const Filters = () => {
   const keySeach = useRef<HTMLInputElement | null>(null);

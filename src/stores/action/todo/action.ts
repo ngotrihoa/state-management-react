@@ -1,5 +1,7 @@
 import { TodoTypes } from './actionType';
-export const addTodo = (payload: any) => {
+import { TodoListProps } from '../../reducer/todo';
+
+export const addTodo = (payload: TodoListProps) => {
   return {
     type: TodoTypes.ADD_TODO,
     payload,

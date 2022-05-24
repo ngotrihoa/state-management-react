@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { PriorityItemProps } from '../../constants/const';
+import { PriotityType, PRIORITY } from '../../constants/const';
 import BoxStatus from '../BoxStatus';
 
 interface TodoItemProps {
   id: string;
   content: string;
   status: string;
-  priority: PriorityItemProps;
+  priority: PriotityType;
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({
@@ -32,11 +32,17 @@ const TodoItem: React.FC<TodoItemProps> = ({
         id={id}
         checked={isChecked}
         onChange={handleChange}
+        className='w-4 h-4'
       />
-      <label htmlFor={id} className='inline-block flex-1 text-[18px]'>
+      <label
+        htmlFor={id}
+        className='inline-block flex-1 text-[18px] capitalize'
+      >
         {content}
       </label>
-      <BoxStatus color={priority.color}>{priority.label}</BoxStatus>
+      <BoxStatus color={PRIORITY[priority].color}>
+        {PRIORITY[priority].label}
+      </BoxStatus>
     </div>
   );
 };
