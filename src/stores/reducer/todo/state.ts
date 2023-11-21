@@ -1,4 +1,7 @@
-import { PriotityType, StatusTodoType } from './../../../constants/const';
+import {
+  PriotityType,
+  StatusTodoType,
+} from '../../../page/todo/presentation/constants';
 
 export interface TodoListProps {
   id: string;

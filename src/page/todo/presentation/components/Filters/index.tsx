@@ -1,13 +1,7 @@
-import React, { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import Select from 'react-select';
-import { PRIORITY, StatusTodoType } from '../../constants/const';
-import { useDispatch } from '../../stateManager';
-import {
-  filterByKey,
-  filterByPriority,
-  filterByStatus,
-} from '../../stores/action/todo/action';
-import { convertObjectToArray } from '../../utils';
+import { convertObjectToArray } from '../../../../../utils';
+import { PRIORITY, StatusTodoType } from '../../constants';
 import { colourStyles } from './const';
 
 const priorityArr = convertObjectToArray(PRIORITY);
@@ -19,17 +13,17 @@ const Filters = () => {
     StatusTodoType | 'all'
   >('all');
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const handleSearch = (e: SyntheticEvent) => {
     e.preventDefault();
 
     const key = keyRef.current!.value.trim().toLowerCase();
-    key === '' && dispatch(filterByKey(key));
+    // key === '' && dispatch(filterByKey(key));
   };
 
   useEffect(() => {
-    dispatch(filterByStatus(statusRadioValue));
+    // dispatch(filterByStatus(statusRadioValue));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusRadioValue]);
 
@@ -45,9 +39,9 @@ const Filters = () => {
             id='search'
             className='flex-1 border px-3 py-1'
             placeholder='Type to search...'
-            onChange={() =>
-              dispatch(filterByKey(keyRef.current!.value.trim().toLowerCase()))
-            }
+            onChange={() => {
+              // dispatch(filterByKey(keyRef.current!.value.trim().toLowerCase()))
+            }}
             ref={keyRef}
           />
           <button
@@ -105,7 +99,7 @@ const Filters = () => {
           placeholder='Select priority...'
           className='mt-2'
           onChange={(value) => {
-            dispatch(filterByPriority(value.map((item: any) => item.value)));
+            // dispatch(filterByPriority(value.map((item: any) => item.value)));
           }}
           styles={colourStyles}
           options={priorityArr}

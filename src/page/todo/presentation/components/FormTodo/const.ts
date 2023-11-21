@@ -1,7 +1,7 @@
 import chroma from 'chroma-js';
 import { StylesConfig } from 'react-select';
 
-export const colourStyles: StylesConfig = {
+export const colorStyles: StylesConfig = {
   control: (styles: any) => ({ ...styles, backgroundColor: 'white' }),
   option: (styles: any, { data, isDisabled, isFocused, isSelected }: any) => {
     const color = chroma(data.color);

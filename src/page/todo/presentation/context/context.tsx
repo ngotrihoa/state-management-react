@@ -1,5 +1,5 @@
 import React from 'react';
-import { TodoModel } from '../../../domain/model';
+import { TodoModel } from '../../domain/model';
 
 type Updater<T> = T | ((prevValue: T) => T);
 

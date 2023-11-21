@@ -1,4 +1,7 @@
-import { StatusTodoType, PriotityType } from './../../../constants/const';
+import {
+  StatusTodoType,
+  PriotityType,
+} from '../../../page/todo/presentation/constants';
 import { TodoTypes } from './actionType';
 import { TodoListProps } from '../../reducer/todo';
 

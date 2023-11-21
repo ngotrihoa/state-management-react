@@ -8,6 +8,10 @@ export const TodoContextProvider = ({
 }) => {
   const [inputValue, setInputValue] = useState<string>();
 
+  const getTodo = (payload: any) => {
+    // const value = async todoServices.getTodo();
+  };
+
   return (
     <TodoContext.Provider
       value={{

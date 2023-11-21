@@ -1,7 +1,7 @@
 import { TodoModel } from '../model';
 
-export interface ITodoRepository {
+export interface TodoRepository {
   getTodo: () => Promise<TodoModel[]>;
-  createTodo: () => Promise<TodoModel>;
-  removeTodo: () => Promise<boolean>;
+  createTodo: (payload: TodoModel) => Promise<TodoModel>;
+  removeTodo: (id: TodoModel['id']) => Promise<boolean>;
 }

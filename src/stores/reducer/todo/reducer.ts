@@ -1,4 +1,4 @@
-import { statusTodoType } from '../../../constants/const';
+import { statusTodoType } from '../../../page/todo/presentation/constants';
 import { TodoTypes } from '../../action';
 import { initialState, StateTodoProps } from './state';
 

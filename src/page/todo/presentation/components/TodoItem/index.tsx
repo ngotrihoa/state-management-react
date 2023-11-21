@@ -1,13 +1,9 @@
 import React from 'react';
-import { PRIORITY, PriotityType } from '../../constants/const';
-import BoxStatus from '../BoxStatus';
+import { PRIORITY } from '../../constants';
+import BoxStatus from '../../../../../components/BoxStatus';
+import { StatusTypeEnum, TodoModel } from '../../../domain/model';
 
-interface TodoItemProps {
-  id: string;
-  content: string;
-  status: string;
-  numOrder: number;
-  priority: PriotityType;
+interface TodoItemProps extends TodoModel {
   onChange: Function;
   onDelete: Function;
 }
@@ -17,7 +13,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
   content,
   status,
   priority,
-  numOrder,
+  order,
   onChange,
   onDelete,
 }) => {
@@ -25,19 +21,19 @@ const TodoItem: React.FC<TodoItemProps> = ({
     <div className='flex gap-2'>
       <div
         className={`flex flex-1 items-center gap-2 ${
-          status === 'completed' ? 'opacity-40 line-through' : ''
+          status === StatusTypeEnum.COMPLETED ? 'opacity-40 line-through' : ''
         }`}
       >
         <input
           type='checkbox'
           name=''
           id={id}
-          checked={status === 'completed'}
+          checked={status === StatusTypeEnum.COMPLETED}
           onChange={() => onChange()}
           className='w-4 h-4'
         />
         <label htmlFor={id} className='inline-block flex-1 text-[18px]'>
-          <span className='text-blue-400 pr-1'>#{numOrder} </span>
+          <span className='text-blue-400 pr-1'>#{order} </span>
           <span className='capitalize'>{content}</span>
         </label>
         <BoxStatus color={PRIORITY[priority].color}>
