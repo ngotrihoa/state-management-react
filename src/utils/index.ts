@@ -5,3 +5,11 @@ export const convertObjectToArray = (obj: Object) => {
   }
   return res;
 };
+
+export const delay = <T>(callback: Function, ms: number = 1000): Promise<T> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(callback());
+    }, ms);
+  });
+};

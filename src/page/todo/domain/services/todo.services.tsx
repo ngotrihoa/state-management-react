@@ -1,29 +1,46 @@
-import { v4 as uuidv4 } from 'uuid';
-import { PriorityTypeEnum, StatusTypeEnum, Todo, TodoModel } from '../model';
-import { TodoRepository } from '../repositories';
+import { TodoModel, TodoPayload } from '../model/todo.model';
+import { ITodoRepository } from '../repositories/todo.repositories';
 
-interface TodoPayload extends Partial<TodoModel> {
-  content: TodoModel['content'];
-}
 export interface ITodoServices {
   createTodo: (payload: TodoPayload) => Promise<TodoModel>;
+  getAllTodo: () => Promise<TodoModel[]>;
+  getTodoById: (id: string) => Promise<TodoModel[]>;
+  updateTodoById: (id: string, payload: TodoPayload) => Promise<TodoModel>;
+  removeTodo: (id: string, payload: TodoPayload) => Promise<boolean>;
+  toggleStatusTodo: (id: string) => Promise<boolean>;
 }
 
 class TodoServices implements ITodoServices {
-  constructor(private todoRepository: TodoRepository) {
+  constructor(private todoRepository: ITodoRepository) {
     this.todoRepository = todoRepository;
   }
 
   createTodo = async (payload: TodoPayload) => {
-    const todo = new Todo({
-      id: payload.id || uuidv4(),
-      content: payload.content,
-      order: payload.order || 0,
-      priority: payload.priority || PriorityTypeEnum.HIGH,
-      status: payload.status || StatusTypeEnum.TODO,
-    });
+    const todo = await this.todoRepository.createTodo(payload);
+    return todo;
+  };
 
-    return await this.todoRepository.createTodo(todo);
+  getAllTodo = async (): Promise<TodoModel[]> => {
+    return await this.todoRepository.getTodo();
+  };
+
+  getTodoById = async (id: string): Promise<TodoModel[]> => {
+    return await this.todoRepository.getTodoById(id);
+  };
+
+  updateTodoById = async (
+    id: string,
+    payload: TodoPayload
+  ): Promise<TodoModel> => {
+    return await this.todoRepository.updateTodo(id, payload);
+  };
+
+  removeTodo = async (id: string): Promise<boolean> => {
+    return await this.todoRepository.removeTodo(id);
+  };
+
+  toggleStatusTodo = async (id: string): Promise<boolean> => {
+    return await this.todoRepository.toggleStatusTodo(id);
   };
 }
 

@@ -17,6 +17,10 @@ export interface TodoModel {
   priority: PriorityTypeEnum;
 }
 
+export interface TodoPayload extends Partial<TodoModel> {
+  content: TodoModel['content'];
+}
+
 export class Todo implements TodoModel {
   id;
   content;

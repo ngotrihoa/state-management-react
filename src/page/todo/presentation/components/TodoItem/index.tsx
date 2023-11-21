@@ -1,7 +1,7 @@
 import React from 'react';
 import { PRIORITY } from '../../constants';
 import BoxStatus from '../../../../../components/BoxStatus';
-import { StatusTypeEnum, TodoModel } from '../../../domain/model';
+import { StatusTypeEnum, TodoModel } from '../../../domain/model/todo.model';
 
 interface TodoItemProps extends TodoModel {
   onChange: Function;

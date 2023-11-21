@@ -1,40 +1,37 @@
-import { SyntheticEvent, useRef, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import Select from 'react-select';
 import { convertObjectToArray } from '../../../../../utils';
+import {
+  PriorityTypeEnum,
+  StatusTypeEnum,
+} from '../../../domain/model/todo.model';
 import { PRIORITY } from '../../constants';
 import { colorStyles } from './const';
-import { PriorityTypeEnum } from '../../../domain/model';
+import { useTodoContext } from '../../context/hooks';
 
 const priorityArr = convertObjectToArray(PRIORITY);
 
 const FormTodo = () => {
-  const inputValue = useRef<HTMLInputElement | null>(null);
-
-  // const todoStore = useSelector((state) => state.todo);
+  const { todoList, addTodo } = useTodoContext();
+  const [content, setContent] = useState<string>('');
 
   const [prioritySelected, setPrioritySelected] = useState<PriorityTypeEnum>(
     PriorityTypeEnum.HIGH
   );
 
-  // const dispatch = useDispatch();
-
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    const value = inputValue.current!.value.trim();
-    if (value === '') return;
+    if (content === '') return;
 
-    // dispatch(
-    //   addTodo({
-    //     id: uuidv4(),
-    //     content: value,
-    //     numOrder: todoStore.totalTodo + 1,
-    //     priority: prioritySelected,
-    //     status: 'todo',
-    //   })
-    // );
+    addTodo({
+      content: content,
+      order: todoList.length + 1,
+      priority: prioritySelected,
+      status: StatusTypeEnum.TODO,
+    });
 
     //reset
-    inputValue.current!.value = '';
+    setContent('');
   };
   return (
     <form className='flex items-stretch' onSubmit={handleSubmit}>
@@ -43,7 +40,8 @@ const FormTodo = () => {
         name=''
         id=''
         className='flex-1 border px-3 py-1'
-        ref={inputValue}
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
       />
       <Select
         defaultValue={priorityArr[0]}

@@ -1,31 +1,26 @@
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import Select from 'react-select';
 import { convertObjectToArray } from '../../../../../utils';
-import { PRIORITY, StatusTodoType } from '../../constants';
+import { StatusTypeEnum } from '../../../domain/model/todo.model';
+import { PRIORITY } from '../../constants';
+import { useTodoContext } from '../../context/hooks';
 import { colourStyles } from './const';
 
 const priorityArr = convertObjectToArray(PRIORITY);
 
 const Filters = () => {
-  const keyRef = useRef<HTMLInputElement | null>(null);
-
-  const [statusRadioValue, setStatusRadioValue] = useState<
-    StatusTodoType | 'all'
-  >('all');
-
-  // const dispatch = useDispatch();
+  const { filters, onChangeFilter } = useTodoContext();
+  const [searchValue, setSearchValue] = useState(filters.key);
 
   const handleSearch = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    const key = keyRef.current!.value.trim().toLowerCase();
-    // key === '' && dispatch(filterByKey(key));
+    onChangeFilter((prev) => ({ ...prev, key: searchValue }));
   };
 
-  useEffect(() => {
-    // dispatch(filterByStatus(statusRadioValue));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [statusRadioValue]);
+  const onChangeStatusFilter = (status: StatusTypeEnum | 'ALL') => {
+    onChangeFilter((prev) => ({ ...prev, status }));
+  };
 
   return (
     <div className='mt-8'>
@@ -39,10 +34,10 @@ const Filters = () => {
             id='search'
             className='flex-1 border px-3 py-1'
             placeholder='Type to search...'
-            onChange={() => {
-              // dispatch(filterByKey(keyRef.current!.value.trim().toLowerCase()))
+            onChange={(e) => {
+              setSearchValue(e.target.value);
             }}
-            ref={keyRef}
+            value={searchValue}
           />
           <button
             type='submit'
@@ -62,8 +57,10 @@ const Filters = () => {
               type='radio'
               name='status'
               id='all'
-              checked={statusRadioValue === 'all'}
-              onChange={() => setStatusRadioValue('all')}
+              checked={filters.status === 'ALL'}
+              onChange={() => {
+                onChangeStatusFilter('ALL');
+              }}
             />
             <label htmlFor='all'>All</label>
           </div>
@@ -72,8 +69,10 @@ const Filters = () => {
               type='radio'
               name='status'
               id='completed'
-              checked={statusRadioValue === 'completed'}
-              onChange={() => setStatusRadioValue('completed')}
+              checked={filters.status === StatusTypeEnum.COMPLETED}
+              onChange={() => {
+                onChangeStatusFilter(StatusTypeEnum.COMPLETED);
+              }}
             />
             <label htmlFor='completed'>Completed</label>
           </div>
@@ -82,8 +81,10 @@ const Filters = () => {
               type='radio'
               name='status'
               id='todo'
-              checked={statusRadioValue === 'todo'}
-              onChange={() => setStatusRadioValue('todo')}
+              checked={filters.status === StatusTypeEnum.TODO}
+              onChange={() => {
+                onChangeStatusFilter(StatusTypeEnum.TODO);
+              }}
             />
             <label htmlFor='todo'>Todo</label>
           </div>
@@ -99,7 +100,10 @@ const Filters = () => {
           placeholder='Select priority...'
           className='mt-2'
           onChange={(value) => {
-            // dispatch(filterByPriority(value.map((item: any) => item.value)));
+            onChangeFilter((prev) => ({
+              ...prev,
+              priorities: value.map((item: any) => item.value),
+            }));
           }}
           styles={colourStyles}
           options={priorityArr}
