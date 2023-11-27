@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useTodoContext } from '../../context/hooks';
 import TodoItem from '../TodoItem';
 import { TodoModel } from '../../../domain/model/todo.model';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 const TodoList = () => {
   const { filters, todoList, removeTodoById, getTodo, toggleStatusTodo } =
@@ -21,29 +22,42 @@ const TodoList = () => {
     return check;
   });
 
+  const onDragEnd = () => {};
+
   useEffect(() => {
     getTodo();
   }, []);
 
   return (
-    <div className='flex-1 flex flex-col gap-1 overflow-y-auto'>
-      {todoListFiltered.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          content={todo.content}
-          id={todo.id}
-          order={todo.order}
-          onChange={() => {
-            toggleStatusTodo(todo.id);
-          }}
-          priority={todo.priority}
-          status={todo.status}
-          onDelete={() => {
-            removeTodoById(todo.id);
-          }}
-        />
-      ))}
-    </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId='2'>
+        {(provider) => (
+          <div
+            className='flex-1 flex flex-col gap-1 overflow-y-auto'
+            ref={provider.innerRef}
+            {...provider.droppableProps}
+          >
+            {todoListFiltered.map((todo, index) => (
+              <TodoItem
+                key={todo.id}
+                content={todo.content}
+                id={todo.id}
+                order={todo.order}
+                onChange={() => {
+                  toggleStatusTodo(todo.id);
+                }}
+                priority={todo.priority}
+                status={todo.status}
+                onDelete={() => {
+                  removeTodoById(todo.id);
+                }}
+                index={index}
+              />
+            ))}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 
